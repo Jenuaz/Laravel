@@ -13,11 +13,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Auth::routes();
+
+Route::get('/', 'HomeController@index');
+
+Route::group(['middleware' => 'role:developer'], function() {
+
+	Route::get('/', 'PermissionController@index');
+	Route::get('/admin', function() {
+		return 'Welcome Admin';
+	});
+	
+	Route::resource('/contacts', 'ContactController');
+	Route::resource('/roles', 'PermissionController');
 });
 
-Route::resource('contacts', 'ContactController');
+
+// Route::group(['middleware' => 'role:manager'], function() {
+
+// 	Route::get('/', 'PermissionController@index');
+// 	Route::get('/admin', function() {
+// 		return 'Welcome Admin';
+// 	});
+	
+// 	Route::resource('/contacts', 'ContactController');
+// 	Route::resource('/roles', 'PermissionController');
+// });
+
 
 Route::group(['prefix' => 'api'], function () {
 //	Route::get('products', ['as' => 'products', function () {
@@ -29,4 +51,4 @@ Route::group(['prefix' => 'api'], function () {
 });
 
 
-
+//Route::get('/home', 'HomeController@index')->name('home');
