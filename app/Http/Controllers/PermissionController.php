@@ -17,6 +17,19 @@ class PermissionController extends Controller
 		return Permission::paginate();
 	}
 
+	//Here fix
+	public function store(Request $request)
+	{
+		$permission = Permission::create([
+			'' => $request->input['']
+		]);
+	}
+
+	public function update(Request $request, $id)
+	{
+
+	}
+
     public function Permission()
     {   
     	$dev_permission = Permission::where('slug','create-tasks')->first();

@@ -18,27 +18,21 @@ Auth::routes();
 Route::get('/', 'HomeController@index');
 
 Route::group(['middleware' => 'role:developer'], function() {
-
-	Route::get('/', 'PermissionController@index');
-	Route::get('/admin', function() {
-		return 'Welcome Admin';
+	Route::group(['prefix' => 'admin'], function () {
+		Route::resource('/permissions', 'PermissionController', ['only' => ['index', 'store', 'update']]);
+		Route::resource('/contacts', 'ContactController');
 	});
-	
-	Route::resource('/contacts', 'ContactController');
-	Route::resource('/roles', 'PermissionController');
 });
 
 
-// Route::group(['middleware' => 'role:manager'], function() {
+Route::group(['middleware' => 'role:manager'], function() {
 
-// 	Route::get('/', 'PermissionController@index');
-// 	Route::get('/admin', function() {
-// 		return 'Welcome Admin';
-// 	});
+	Route::get('/admin', function() {
+		return 'Welcome Manager';
+	});
 	
-// 	Route::resource('/contacts', 'ContactController');
-// 	Route::resource('/roles', 'PermissionController');
-// });
+	Route::resource('/roles', 'PermissionController', ['only' => ['index']]);
+});
 
 
 Route::group(['prefix' => 'api'], function () {
